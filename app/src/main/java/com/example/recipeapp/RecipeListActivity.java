@@ -33,37 +33,10 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         setContentView(R.layout.activity_recipe_list);
         recipeListViewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
 
-        subscribeObservers();
         initRecyclerview();
         initSearchView();
 
-        if (!recipeListViewModel.isViewingRecipes()){
-            displayCategories();
-        }
         setSupportActionBar(findViewById(R.id.toolbar));
-    }
-
-    private void subscribeObservers(){
-        recipeListViewModel.getRecipes().observe(this, new Observer<List<Recipe>>() {
-            @Override
-            public void onChanged(List<Recipe> recipes) {
-                if (recipes != null){
-                    if (recipeListViewModel.isViewingRecipes()){
-                        recipeListViewModel.setPerformingQuery(false);
-                        adapter.setRecipes(recipes);
-                    }
-                }
-            }
-        });
-
-        recipeListViewModel.isQueryExhausted().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean){
-                    adapter.setQueryExhausted();
-                }
-            }
-        });
     }
 
     private void initRecyclerview(){
@@ -74,14 +47,6 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         recyclerView.setHasFixedSize(true);
         adapter = new RecipeRecyclerAdapter(this);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if (!recyclerView.canScrollVertically(1)){
-                    recipeListViewModel.searchNextPage();
-                }
-            }
-        });
     }
 
     private void initSearchView(){
@@ -89,9 +54,7 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                adapter.displayLoading();
-                recipeListViewModel.searchRecipesApi(s, 1);
-                searchView.clearFocus();
+
                 return false;
             }
 
@@ -111,36 +74,5 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
 
     @Override
     public void onCategoryClick(String category) {
-        adapter.displayLoading();
-        recipeListViewModel.searchRecipesApi(category, 1);
-        searchView.clearFocus();
-    }
-
-    private void displayCategories(){
-        recipeListViewModel.setViewingRecipes(false);
-        adapter.displayCategories();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (recipeListViewModel.onBackPressed()){
-            super.onBackPressed();
-        } else {
-            displayCategories();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.recipe_search_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_categories){
-            displayCategories();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
