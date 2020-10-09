@@ -31,15 +31,17 @@ public class RecipeListActivity extends BaseActivity implements OnRecipeListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
+
         recipeListViewModel = new ViewModelProvider(this).get(RecipeListViewModel.class);
 
-        subscribeObservers();
         initRecyclerview();
         initSearchView();
+        subscribeObservers();
 
         if (!recipeListViewModel.isViewingRecipes()){
             displayCategories();
         }
+        
         setSupportActionBar(findViewById(R.id.toolbar));
     }
 
