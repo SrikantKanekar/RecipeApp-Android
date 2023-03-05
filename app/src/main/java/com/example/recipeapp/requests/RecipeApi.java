@@ -1,6 +1,6 @@
 package com.example.recipeapp.requests;
 
-import com.example.recipeapp.requests.responses.RecipeResponse;
+import com.example.recipeapp.models.Recipe;
 import com.example.recipeapp.requests.responses.RecipeSearchResponse;
 
 import retrofit2.Call;
@@ -9,16 +9,14 @@ import retrofit2.http.Query;
 
 public interface RecipeApi {
 
-    @GET("api/search")
+    @GET("api/recipe/search")
     Call<RecipeSearchResponse> searchRecipe(
-            @Query("key") String key,
-            @Query("q") String query,
+            @Query("query") String query,
             @Query("page") String page
     );
 
-    @GET("api/get")
-    Call<RecipeResponse> getRecipe(
-            @Query("key") String key,
-            @Query("rId") String recipeId
+    @GET("api/recipe/get")
+    Call<Recipe> getRecipe(
+            @Query("id") String recipeId
     );
 }

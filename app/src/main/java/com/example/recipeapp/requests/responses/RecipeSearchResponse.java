@@ -12,7 +12,7 @@ public class RecipeSearchResponse {
     @Expose
     private int count;
 
-    @SerializedName("recipes")
+    @SerializedName("results")
     @Expose
     private List<Recipe> recipes;
 

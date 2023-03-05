@@ -9,17 +9,17 @@ public class Recipe implements Parcelable {
     private String title;
     private String publisher;
     private String[] ingredients;
-    private String recipe_id;
-    private String image_url;
-    private float social_rank;
+    private String pk;
+    private String featured_image;
+    private float rating;
 
     public Recipe(String title, String publisher, String[] ingredients, String recipeId, String imageUrl, float socialRank) {
         this.title = title;
         this.publisher = publisher;
         this.ingredients = ingredients;
-        this.recipe_id = recipeId;
-        this.image_url = imageUrl;
-        this.social_rank = socialRank;
+        this.pk = recipeId;
+        this.featured_image = imageUrl;
+        this.rating = socialRank;
     }
 
     public Recipe() {
@@ -29,9 +29,9 @@ public class Recipe implements Parcelable {
         title = in.readString();
         publisher = in.readString();
         ingredients = in.createStringArray();
-        recipe_id = in.readString();
-        image_url = in.readString();
-        social_rank = in.readFloat();
+        pk = in.readString();
+        featured_image = in.readString();
+        rating = in.readFloat();
     }
 
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
@@ -71,27 +71,27 @@ public class Recipe implements Parcelable {
     }
 
     public String getRecipeId() {
-        return recipe_id;
+        return pk;
     }
 
     public void setRecipeId(String recipe_id) {
-        this.recipe_id = recipe_id;
+        this.pk = recipe_id;
     }
 
     public String getImageUrl() {
-        return image_url;
+        return featured_image;
     }
 
     public void setImageUrl(String image_url) {
-        this.image_url = image_url;
+        this.featured_image = image_url;
     }
 
     public float getSocialRank() {
-        return social_rank;
+        return rating;
     }
 
     public void setSocialRank(float social_rank) {
-        this.social_rank = social_rank;
+        this.rating = social_rank;
     }
 
     @Override
@@ -100,9 +100,9 @@ public class Recipe implements Parcelable {
                 "title='" + title + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", ingredients=" + Arrays.toString(ingredients) +
-                ", recipeId='" + recipe_id + '\'' +
-                ", imageUrl='" + image_url + '\'' +
-                ", socialRank=" + social_rank +
+                ", recipeId='" + pk + '\'' +
+                ", imageUrl='" + featured_image + '\'' +
+                ", socialRank=" + rating +
                 '}';
     }
 
@@ -116,8 +116,8 @@ public class Recipe implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(publisher);
         parcel.writeStringArray(ingredients);
-        parcel.writeString(recipe_id);
-        parcel.writeString(image_url);
-        parcel.writeFloat(social_rank);
+        parcel.writeString(pk);
+        parcel.writeString(featured_image);
+        parcel.writeFloat(rating);
     }
 }

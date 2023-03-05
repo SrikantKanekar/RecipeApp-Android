@@ -7,9 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.recipeapp.AppExecutors;
 import com.example.recipeapp.models.Recipe;
-import com.example.recipeapp.requests.responses.RecipeResponse;
 import com.example.recipeapp.requests.responses.RecipeSearchResponse;
-import com.example.recipeapp.util.Constants;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -131,7 +129,6 @@ public class RecipeApiClient {
 
         private Call<RecipeSearchResponse> getRecipes(String query, int pageNumber) {
             return ServiceGenerator.getRecipeApi().searchRecipe(
-                    Constants.API_KEY,
                     query,
                     String.valueOf(pageNumber)
             );
@@ -160,7 +157,7 @@ public class RecipeApiClient {
                 }
 
                 if (response.code() == 200) {
-                    Recipe currentRecipe = ((RecipeResponse) response.body()).getRecipe();
+                    Recipe currentRecipe = ((Recipe) response.body());
                     recipe.postValue(currentRecipe);
                 } else {
                     Log.e(TAG, "onResponse: errorBody" + response.errorBody().toString());
@@ -172,9 +169,8 @@ public class RecipeApiClient {
             }
         }
 
-        private Call<RecipeResponse> getRecipe(String recipeId) {
+        private Call<Recipe> getRecipe(String recipeId) {
             return ServiceGenerator.getRecipeApi().getRecipe(
-                    Constants.API_KEY,
                     recipeId
             );
         }
